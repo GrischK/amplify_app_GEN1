@@ -1,14 +1,10 @@
 import {useEffect, useState} from 'react';
-
 import {generateClient} from 'aws-amplify/api';
-
+const client = generateClient();
+import * as mutations from './graphql/mutations';
 import {createTodo} from './graphql/mutations';
 import {listTodos} from './graphql/queries';
 import {type CreateTodoInput, type Todo} from './API';
-
-const client = generateClient();
-import * as mutations from './graphql/mutations';
-
 import {
     withAuthenticator,
     Button,
@@ -17,14 +13,9 @@ import {
     TextField,
     View
 } from '@aws-amplify/ui-react';
-import {type AuthUser} from "aws-amplify/auth";
-import {type UseAuthenticator} from "@aws-amplify/ui-react-core";
 import '@aws-amplify/ui-react/styles.css';
+import {AppProps} from "./types/types.ts";
 
-type AppProps = {
-    signOut?: UseAuthenticator["signOut"]; //() => void;
-    user?: AuthUser;
-};
 
 const initialState: CreateTodoInput = {name: '', description: ''};
 
@@ -72,6 +63,7 @@ const App: React.FC<AppProps> = ({signOut, user}) => {
             query: mutations.deleteTodo,
             variables: {input: {id}},
         })
+        setTodos(todos.filter(todo => todo.id !== id));
     }
 
     console.log(todos)
@@ -108,7 +100,7 @@ const App: React.FC<AppProps> = ({signOut, user}) => {
                     <Text style={styles.todoName}>{todo.name}</Text>
                     <Text style={styles.todoDescription}>{todo.description}</Text>
                     <Button style={styles.button} onClick={() => deleteTodo(todo.id!)}>
-                        Delete Todo
+                        Delete
                     </Button>
                 </View>
             ))}
@@ -140,7 +132,7 @@ const styles = {
         color: "white",
         outline: "none",
         fontSize: 18,
-        padding: "12px 0px",
+        padding: "12px 6px",
     },
 } as const;
 
