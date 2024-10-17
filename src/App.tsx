@@ -1,13 +1,14 @@
-import { useEffect, useState } from 'react';
+import {useEffect, useState} from 'react';
 
-import { generateClient } from 'aws-amplify/api';
+import {generateClient} from 'aws-amplify/api';
 
-import { createTodo } from './graphql/mutations';
-import { listTodos } from './graphql/queries';
-import { type CreateTodoInput, type Todo } from './API';
+import {createTodo} from './graphql/mutations';
+import {listTodos} from './graphql/queries';
+import {type CreateTodoInput, type Todo} from './API';
 
-const initialState: CreateTodoInput = { name: '', description: '' };
 const client = generateClient();
+import * as mutations from './graphql/mutations';
+
 import {
     withAuthenticator,
     Button,
@@ -16,8 +17,8 @@ import {
     TextField,
     View
 } from '@aws-amplify/ui-react';
-import { type AuthUser } from "aws-amplify/auth";
-import { type UseAuthenticator } from "@aws-amplify/ui-react-core";
+import {type AuthUser} from "aws-amplify/auth";
+import {type UseAuthenticator} from "@aws-amplify/ui-react-core";
 import '@aws-amplify/ui-react/styles.css';
 
 type AppProps = {
@@ -25,8 +26,10 @@ type AppProps = {
     user?: AuthUser;
 };
 
+const initialState: CreateTodoInput = {name: '', description: ''};
+
 // eslint-disable-next-line react-refresh/only-export-components
-const App: React.FC<AppProps> = ({ signOut, user }) => {
+const App: React.FC<AppProps> = ({signOut, user}) => {
     const [formState, setFormState] = useState<CreateTodoInput>(initialState);
     const [todos, setTodos] = useState<Todo[] | CreateTodoInput[]>([]);
 
@@ -49,7 +52,7 @@ const App: React.FC<AppProps> = ({ signOut, user }) => {
     async function addTodo() {
         try {
             if (!formState.name || !formState.description) return;
-            const todo = { ...formState };
+            const todo = {...formState};
             setTodos([...todos, todo]);
             setFormState(initialState);
             await client.graphql({
@@ -61,8 +64,17 @@ const App: React.FC<AppProps> = ({ signOut, user }) => {
         } catch (err) {
             console.log('error creating todo:', err);
         }
+        console.log(formState)
     }
 
+    async function deleteTodo(id: string) {
+        await client.graphql({
+            query: mutations.deleteTodo,
+            variables: {input: {id}},
+        })
+    }
+
+    console.log(todos)
     return (
         <View style={styles.container}>
             <Heading level={1}>Hello {user?.username}</Heading>
@@ -74,19 +86,19 @@ const App: React.FC<AppProps> = ({ signOut, user }) => {
                 label=""
                 placeholder="Name"
                 onChange={(event) =>
-                    setFormState({ ...formState, name: event.target.value })
+                    setFormState({...formState, name: event.target.value})
                 }
                 style={styles.input}
-                defaultValue={formState.name}
+                value={formState.name}
             />
             <TextField
                 label=""
                 placeholder="Description"
                 onChange={(event) =>
-                    setFormState({ ...formState, description: event.target.value })
+                    setFormState({...formState, description: event.target.value})
                 }
                 style={styles.input}
-                defaultValue={formState.description ?? ''}
+                value={formState.description ?? ''}
             />
             <Button style={styles.button} onClick={addTodo}>
                 Create Todo
@@ -95,6 +107,9 @@ const App: React.FC<AppProps> = ({ signOut, user }) => {
                 <View key={todo.id ? todo.id : index} style={styles.todo}>
                     <Text style={styles.todoName}>{todo.name}</Text>
                     <Text style={styles.todoDescription}>{todo.description}</Text>
+                    <Button style={styles.button} onClick={() => deleteTodo(todo.id!)}>
+                        Delete Todo
+                    </Button>
                 </View>
             ))}
         </View>
@@ -110,7 +125,7 @@ const styles = {
         justifyContent: "center",
         padding: 20,
     },
-    todo: { marginBottom: 15 },
+    todo: {marginBottom: 15},
     input: {
         border: "none",
         backgroundColor: "#ddd",
@@ -118,8 +133,8 @@ const styles = {
         padding: 8,
         fontSize: 18,
     },
-    todoName: { fontSize: 20, fontWeight: "bold" },
-    todoDescription: { marginBottom: 0 },
+    todoName: {fontSize: 20, fontWeight: "bold"},
+    todoDescription: {marginBottom: 0},
     button: {
         backgroundColor: "black",
         color: "white",
