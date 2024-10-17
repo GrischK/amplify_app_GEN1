@@ -8,8 +8,25 @@ import { type CreateTodoInput, type Todo } from './API';
 
 const initialState: CreateTodoInput = { name: '', description: '' };
 const client = generateClient();
+import {
+    withAuthenticator,
+    Button,
+    Heading,
+    Text,
+    TextField,
+    View
+} from '@aws-amplify/ui-react';
+import { type AuthUser } from "aws-amplify/auth";
+import { type UseAuthenticator } from "@aws-amplify/ui-react-core";
+import '@aws-amplify/ui-react/styles.css';
 
-const App = () => {
+type AppProps = {
+    signOut?: UseAuthenticator["signOut"]; //() => void;
+    user?: AuthUser;
+};
+
+// eslint-disable-next-line react-refresh/only-export-components
+const App: React.FC<AppProps> = ({ signOut, user }) => {
     const [formState, setFormState] = useState<CreateTodoInput>(initialState);
     const [todos, setTodos] = useState<Todo[] | CreateTodoInput[]>([]);
 
@@ -47,34 +64,40 @@ const App = () => {
     }
 
     return (
-        <div style={styles.container}>
-            <h2>Amplify Todos</h2>
-            <input
+        <View style={styles.container}>
+            <Heading level={1}>Hello {user?.username}</Heading>
+            <Button style={styles.button} onClick={signOut}>
+                Sign out
+            </Button>
+            <Heading level={2}>Amplify Todos</Heading>
+            <TextField
+                label=""
+                placeholder="Name"
                 onChange={(event) =>
                     setFormState({ ...formState, name: event.target.value })
                 }
                 style={styles.input}
-                value={formState.name}
-                placeholder="Name"
+                defaultValue={formState.name}
             />
-            <input
+            <TextField
+                label=""
+                placeholder="Description"
                 onChange={(event) =>
                     setFormState({ ...formState, description: event.target.value })
                 }
                 style={styles.input}
-                value={formState.description as string}
-                placeholder="Description"
+                defaultValue={formState.description ?? ''}
             />
-            <button style={styles.button} onClick={addTodo}>
+            <Button style={styles.button} onClick={addTodo}>
                 Create Todo
-            </button>
+            </Button>
             {todos.map((todo, index) => (
-                <div key={todo.id ? todo.id : index} style={styles.todo}>
-                    <p style={styles.todoName}>{todo.name}</p>
-                    <p style={styles.todoDescription}>{todo.description}</p>
-                </div>
+                <View key={todo.id ? todo.id : index} style={styles.todo}>
+                    <Text style={styles.todoName}>{todo.name}</Text>
+                    <Text style={styles.todoDescription}>{todo.description}</Text>
+                </View>
             ))}
-        </div>
+        </View>
     );
 };
 
@@ -106,4 +129,4 @@ const styles = {
     },
 } as const;
 
-export default App;
+export default withAuthenticator(App);
