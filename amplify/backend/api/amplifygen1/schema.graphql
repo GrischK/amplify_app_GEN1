@@ -6,4 +6,5 @@ type Dog @model {
   id: ID!
   name: String!
   representative: String
+  picture: String
 }

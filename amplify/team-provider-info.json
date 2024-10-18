@@ -23,6 +23,9 @@
           "appId": "d392ewle49o0uj",
           "type": "manual"
         }
+      },
+      "storage": {
+        "amplifygen1storage": {}
       }
     }
   }

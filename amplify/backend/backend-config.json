@@ -67,5 +67,12 @@
         }
       ]
     }
+  },
+  "storage": {
+    "amplifygen1storage": {
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "S3"
+    }
   }
 }
