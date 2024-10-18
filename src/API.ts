@@ -12,8 +12,9 @@ export type CreateDogInput = {
 export type ModelDogConditionInput = {
   name?: ModelStringInput | null,
   representative?: ModelStringInput | null,
-  and?: Array<ModelDogConditionInput | null> | null,
-  or?: Array<ModelDogConditionInput | null> | null,
+  picture?: ModelStringInput | null,
+  and?: Array< ModelDogConditionInput | null > | null,
+  or?: Array< ModelDogConditionInput | null > | null,
   not?: ModelDogConditionInput | null,
   createdAt?: ModelStringInput | null,
   updatedAt?: ModelStringInput | null,
@@ -28,7 +29,7 @@ export type ModelStringInput = {
   gt?: string | null,
   contains?: string | null,
   notContains?: string | null,
-  between?: Array<string | null> | null,
+  between?: Array< string | null > | null,
   beginsWith?: string | null,
   attributeExists?: boolean | null,
   attributeType?: ModelAttributeTypes | null,
@@ -56,7 +57,7 @@ export type ModelSizeInput = {
   lt?: number | null,
   ge?: number | null,
   gt?: number | null,
-  between?: Array<number | null> | null,
+  between?: Array< number | null > | null,
 };
 
 export type Dog = {
@@ -64,6 +65,7 @@ export type Dog = {
   id: string,
   name: string,
   representative?: string | null,
+  picture?: string | null,
   createdAt: string,
   updatedAt: string,
 };
@@ -72,6 +74,7 @@ export type UpdateDogInput = {
   id: string,
   name?: string | null,
   representative?: string | null,
+  picture?: string | null,
 };
 
 export type DeleteDogInput = {
@@ -82,10 +85,11 @@ export type ModelDogFilterInput = {
   id?: ModelIDInput | null,
   name?: ModelStringInput | null,
   representative?: ModelStringInput | null,
+  picture?: ModelStringInput | null,
   createdAt?: ModelStringInput | null,
   updatedAt?: ModelStringInput | null,
-  and?: Array<ModelDogFilterInput | null> | null,
-  or?: Array<ModelDogFilterInput | null> | null,
+  and?: Array< ModelDogFilterInput | null > | null,
+  or?: Array< ModelDogFilterInput | null > | null,
   not?: ModelDogFilterInput | null,
 };
 
@@ -98,7 +102,7 @@ export type ModelIDInput = {
   gt?: string | null,
   contains?: string | null,
   notContains?: string | null,
-  between?: Array<string | null> | null,
+  between?: Array< string | null > | null,
   beginsWith?: string | null,
   attributeExists?: boolean | null,
   attributeType?: ModelAttributeTypes | null,
@@ -107,7 +111,7 @@ export type ModelIDInput = {
 
 export type ModelDogConnection = {
   __typename: "ModelDogConnection",
-  items: Array<Dog | null>,
+  items:  Array<Dog | null >,
   nextToken?: string | null,
 };
 
@@ -115,10 +119,11 @@ export type ModelSubscriptionDogFilterInput = {
   id?: ModelSubscriptionIDInput | null,
   name?: ModelSubscriptionStringInput | null,
   representative?: ModelSubscriptionStringInput | null,
+  picture?: ModelSubscriptionStringInput | null,
   createdAt?: ModelSubscriptionStringInput | null,
   updatedAt?: ModelSubscriptionStringInput | null,
-  and?: Array<ModelSubscriptionDogFilterInput | null> | null,
-  or?: Array<ModelSubscriptionDogFilterInput | null> | null,
+  and?: Array< ModelSubscriptionDogFilterInput | null > | null,
+  or?: Array< ModelSubscriptionDogFilterInput | null > | null,
 };
 
 export type ModelSubscriptionIDInput = {
@@ -130,10 +135,10 @@ export type ModelSubscriptionIDInput = {
   gt?: string | null,
   contains?: string | null,
   notContains?: string | null,
-  between?: Array<string | null> | null,
+  between?: Array< string | null > | null,
   beginsWith?: string | null,
-  in?: Array<string | null> | null,
-  notIn?: Array<string | null> | null,
+  in?: Array< string | null > | null,
+  notIn?: Array< string | null > | null,
 };
 
 export type ModelSubscriptionStringInput = {
@@ -145,10 +150,10 @@ export type ModelSubscriptionStringInput = {
   gt?: string | null,
   contains?: string | null,
   notContains?: string | null,
-  between?: Array<string | null> | null,
+  between?: Array< string | null > | null,
   beginsWith?: string | null,
-  in?: Array<string | null> | null,
-  notIn?: Array<string | null> | null,
+  in?: Array< string | null > | null,
+  notIn?: Array< string | null > | null,
 };
 
 export type CreateDogMutationVariables = {
@@ -157,11 +162,12 @@ export type CreateDogMutationVariables = {
 };
 
 export type CreateDogMutation = {
-  createDog?: {
+  createDog?:  {
     __typename: "Dog",
     id: string,
     name: string,
     representative?: string | null,
+    picture?: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -173,11 +179,12 @@ export type UpdateDogMutationVariables = {
 };
 
 export type UpdateDogMutation = {
-  updateDog?: {
+  updateDog?:  {
     __typename: "Dog",
     id: string,
     name: string,
     representative?: string | null,
+    picture?: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -189,11 +196,12 @@ export type DeleteDogMutationVariables = {
 };
 
 export type DeleteDogMutation = {
-  deleteDog?: {
+  deleteDog?:  {
     __typename: "Dog",
     id: string,
     name: string,
     representative?: string | null,
+    picture?: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -204,11 +212,12 @@ export type GetDogQueryVariables = {
 };
 
 export type GetDogQuery = {
-  getDog?: {
+  getDog?:  {
     __typename: "Dog",
     id: string,
     name: string,
     representative?: string | null,
+    picture?: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -221,16 +230,17 @@ export type ListDogsQueryVariables = {
 };
 
 export type ListDogsQuery = {
-  listDogs?: {
+  listDogs?:  {
     __typename: "ModelDogConnection",
-    items: Array<{
+    items:  Array< {
       __typename: "Dog",
       id: string,
       name: string,
       representative?: string | null,
+      picture?: string | null,
       createdAt: string,
       updatedAt: string,
-    } | null>,
+    } | null >,
     nextToken?: string | null,
   } | null,
 };
@@ -240,11 +250,12 @@ export type OnCreateDogSubscriptionVariables = {
 };
 
 export type OnCreateDogSubscription = {
-  onCreateDog?: {
+  onCreateDog?:  {
     __typename: "Dog",
     id: string,
     name: string,
     representative?: string | null,
+    picture?: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -255,11 +266,12 @@ export type OnUpdateDogSubscriptionVariables = {
 };
 
 export type OnUpdateDogSubscription = {
-  onUpdateDog?: {
+  onUpdateDog?:  {
     __typename: "Dog",
     id: string,
     name: string,
     representative?: string | null,
+    picture?: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -270,11 +282,12 @@ export type OnDeleteDogSubscriptionVariables = {
 };
 
 export type OnDeleteDogSubscription = {
-  onDeleteDog?: {
+  onDeleteDog?:  {
     __typename: "Dog",
     id: string,
     name: string,
     representative?: string | null,
+    picture?: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,

@@ -13,6 +13,7 @@ export const onCreateDog = /* GraphQL */ `subscription OnCreateDog($filter: Mode
     id
     name
     representative
+    picture
     createdAt
     updatedAt
     __typename
@@ -27,6 +28,7 @@ export const onUpdateDog = /* GraphQL */ `subscription OnUpdateDog($filter: Mode
     id
     name
     representative
+    picture
     createdAt
     updatedAt
     __typename
@@ -41,6 +43,7 @@ export const onDeleteDog = /* GraphQL */ `subscription OnDeleteDog($filter: Mode
     id
     name
     representative
+    picture
     createdAt
     updatedAt
     __typename

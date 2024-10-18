@@ -13,6 +13,7 @@ export const getDog = /* GraphQL */ `query GetDog($id: ID!) {
     id
     name
     representative
+    picture
     createdAt
     updatedAt
     __typename
@@ -25,6 +26,7 @@ export const listDogs = /* GraphQL */ `query ListDogs($filter: ModelDogFilterInp
       id
       name
       representative
+      picture
       createdAt
       updatedAt
       __typename
