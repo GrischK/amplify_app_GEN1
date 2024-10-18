@@ -8,45 +8,45 @@ type GeneratedSubscription<InputType, OutputType> = string & {
   __generatedSubscriptionOutput: OutputType;
 };
 
-export const onCreateTodo = /* GraphQL */ `subscription OnCreateTodo($filter: ModelSubscriptionTodoFilterInput) {
-  onCreateTodo(filter: $filter) {
+export const onCreateDog = /* GraphQL */ `subscription OnCreateDog($filter: ModelSubscriptionDogFilterInput) {
+  onCreateDog(filter: $filter) {
     id
     name
-    description
+    representative
     createdAt
     updatedAt
     __typename
   }
 }
 ` as GeneratedSubscription<
-  APITypes.OnCreateTodoSubscriptionVariables,
-  APITypes.OnCreateTodoSubscription
+  APITypes.OnCreateDogSubscriptionVariables,
+  APITypes.OnCreateDogSubscription
 >;
-export const onUpdateTodo = /* GraphQL */ `subscription OnUpdateTodo($filter: ModelSubscriptionTodoFilterInput) {
-  onUpdateTodo(filter: $filter) {
+export const onUpdateDog = /* GraphQL */ `subscription OnUpdateDog($filter: ModelSubscriptionDogFilterInput) {
+  onUpdateDog(filter: $filter) {
     id
     name
-    description
+    representative
     createdAt
     updatedAt
     __typename
   }
 }
 ` as GeneratedSubscription<
-  APITypes.OnUpdateTodoSubscriptionVariables,
-  APITypes.OnUpdateTodoSubscription
+  APITypes.OnUpdateDogSubscriptionVariables,
+  APITypes.OnUpdateDogSubscription
 >;
-export const onDeleteTodo = /* GraphQL */ `subscription OnDeleteTodo($filter: ModelSubscriptionTodoFilterInput) {
-  onDeleteTodo(filter: $filter) {
+export const onDeleteDog = /* GraphQL */ `subscription OnDeleteDog($filter: ModelSubscriptionDogFilterInput) {
+  onDeleteDog(filter: $filter) {
     id
     name
-    description
+    representative
     createdAt
     updatedAt
     __typename
   }
 }
 ` as GeneratedSubscription<
-  APITypes.OnDeleteTodoSubscriptionVariables,
-  APITypes.OnDeleteTodoSubscription
+  APITypes.OnDeleteDogSubscriptionVariables,
+  APITypes.OnDeleteDogSubscription
 >;

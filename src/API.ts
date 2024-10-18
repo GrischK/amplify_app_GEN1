@@ -2,18 +2,18 @@
 /* eslint-disable */
 //  This file was automatically generated and should not be edited.
 
-export type CreateTodoInput = {
+export type CreateDogInput = {
   id?: string | null,
   name: string,
-  description?: string | null,
+  representative?: string | null,
 };
 
-export type ModelTodoConditionInput = {
+export type ModelDogConditionInput = {
   name?: ModelStringInput | null,
-  description?: ModelStringInput | null,
-  and?: Array< ModelTodoConditionInput | null > | null,
-  or?: Array< ModelTodoConditionInput | null > | null,
-  not?: ModelTodoConditionInput | null,
+  representative?: ModelStringInput | null,
+  and?: Array< ModelDogConditionInput | null > | null,
+  or?: Array< ModelDogConditionInput | null > | null,
+  not?: ModelDogConditionInput | null,
   createdAt?: ModelStringInput | null,
   updatedAt?: ModelStringInput | null,
 };
@@ -58,34 +58,34 @@ export type ModelSizeInput = {
   between?: Array< number | null > | null,
 };
 
-export type Todo = {
-  __typename: "Todo",
+export type Dog = {
+  __typename: "Dog",
   id: string,
   name: string,
-  description?: string | null,
+  representative?: string | null,
   createdAt: string,
   updatedAt: string,
 };
 
-export type UpdateTodoInput = {
+export type UpdateDogInput = {
   id: string,
   name?: string | null,
-  description?: string | null,
+  representative?: string | null,
 };
 
-export type DeleteTodoInput = {
+export type DeleteDogInput = {
   id: string,
 };
 
-export type ModelTodoFilterInput = {
+export type ModelDogFilterInput = {
   id?: ModelIDInput | null,
   name?: ModelStringInput | null,
-  description?: ModelStringInput | null,
+  representative?: ModelStringInput | null,
   createdAt?: ModelStringInput | null,
   updatedAt?: ModelStringInput | null,
-  and?: Array< ModelTodoFilterInput | null > | null,
-  or?: Array< ModelTodoFilterInput | null > | null,
-  not?: ModelTodoFilterInput | null,
+  and?: Array< ModelDogFilterInput | null > | null,
+  or?: Array< ModelDogFilterInput | null > | null,
+  not?: ModelDogFilterInput | null,
 };
 
 export type ModelIDInput = {
@@ -104,20 +104,20 @@ export type ModelIDInput = {
   size?: ModelSizeInput | null,
 };
 
-export type ModelTodoConnection = {
-  __typename: "ModelTodoConnection",
-  items:  Array<Todo | null >,
+export type ModelDogConnection = {
+  __typename: "ModelDogConnection",
+  items:  Array<Dog | null >,
   nextToken?: string | null,
 };
 
-export type ModelSubscriptionTodoFilterInput = {
+export type ModelSubscriptionDogFilterInput = {
   id?: ModelSubscriptionIDInput | null,
   name?: ModelSubscriptionStringInput | null,
-  description?: ModelSubscriptionStringInput | null,
+  representative?: ModelSubscriptionStringInput | null,
   createdAt?: ModelSubscriptionStringInput | null,
   updatedAt?: ModelSubscriptionStringInput | null,
-  and?: Array< ModelSubscriptionTodoFilterInput | null > | null,
-  or?: Array< ModelSubscriptionTodoFilterInput | null > | null,
+  and?: Array< ModelSubscriptionDogFilterInput | null > | null,
+  or?: Array< ModelSubscriptionDogFilterInput | null > | null,
 };
 
 export type ModelSubscriptionIDInput = {
@@ -150,83 +150,83 @@ export type ModelSubscriptionStringInput = {
   notIn?: Array< string | null > | null,
 };
 
-export type CreateTodoMutationVariables = {
-  input: CreateTodoInput,
-  condition?: ModelTodoConditionInput | null,
+export type CreateDogMutationVariables = {
+  input: CreateDogInput,
+  condition?: ModelDogConditionInput | null,
 };
 
-export type CreateTodoMutation = {
-  createTodo?:  {
-    __typename: "Todo",
+export type CreateDogMutation = {
+  createDog?:  {
+    __typename: "Dog",
     id: string,
     name: string,
-    description?: string | null,
+    representative?: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,
 };
 
-export type UpdateTodoMutationVariables = {
-  input: UpdateTodoInput,
-  condition?: ModelTodoConditionInput | null,
+export type UpdateDogMutationVariables = {
+  input: UpdateDogInput,
+  condition?: ModelDogConditionInput | null,
 };
 
-export type UpdateTodoMutation = {
-  updateTodo?:  {
-    __typename: "Todo",
+export type UpdateDogMutation = {
+  updateDog?:  {
+    __typename: "Dog",
     id: string,
     name: string,
-    description?: string | null,
+    representative?: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,
 };
 
-export type DeleteTodoMutationVariables = {
-  input: DeleteTodoInput,
-  condition?: ModelTodoConditionInput | null,
+export type DeleteDogMutationVariables = {
+  input: DeleteDogInput,
+  condition?: ModelDogConditionInput | null,
 };
 
-export type DeleteTodoMutation = {
-  deleteTodo?:  {
-    __typename: "Todo",
+export type DeleteDogMutation = {
+  deleteDog?:  {
+    __typename: "Dog",
     id: string,
     name: string,
-    description?: string | null,
+    representative?: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,
 };
 
-export type GetTodoQueryVariables = {
+export type GetDogQueryVariables = {
   id: string,
 };
 
-export type GetTodoQuery = {
-  getTodo?:  {
-    __typename: "Todo",
+export type GetDogQuery = {
+  getDog?:  {
+    __typename: "Dog",
     id: string,
     name: string,
-    description?: string | null,
+    representative?: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,
 };
 
-export type ListTodosQueryVariables = {
-  filter?: ModelTodoFilterInput | null,
+export type ListDogsQueryVariables = {
+  filter?: ModelDogFilterInput | null,
   limit?: number | null,
   nextToken?: string | null,
 };
 
-export type ListTodosQuery = {
-  listTodos?:  {
-    __typename: "ModelTodoConnection",
+export type ListDogsQuery = {
+  listDogs?:  {
+    __typename: "ModelDogConnection",
     items:  Array< {
-      __typename: "Todo",
+      __typename: "Dog",
       id: string,
       name: string,
-      description?: string | null,
+      representative?: string | null,
       createdAt: string,
       updatedAt: string,
     } | null >,
@@ -234,46 +234,46 @@ export type ListTodosQuery = {
   } | null,
 };
 
-export type OnCreateTodoSubscriptionVariables = {
-  filter?: ModelSubscriptionTodoFilterInput | null,
+export type OnCreateDogSubscriptionVariables = {
+  filter?: ModelSubscriptionDogFilterInput | null,
 };
 
-export type OnCreateTodoSubscription = {
-  onCreateTodo?:  {
-    __typename: "Todo",
+export type OnCreateDogSubscription = {
+  onCreateDog?:  {
+    __typename: "Dog",
     id: string,
     name: string,
-    description?: string | null,
+    representative?: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,
 };
 
-export type OnUpdateTodoSubscriptionVariables = {
-  filter?: ModelSubscriptionTodoFilterInput | null,
+export type OnUpdateDogSubscriptionVariables = {
+  filter?: ModelSubscriptionDogFilterInput | null,
 };
 
-export type OnUpdateTodoSubscription = {
-  onUpdateTodo?:  {
-    __typename: "Todo",
+export type OnUpdateDogSubscription = {
+  onUpdateDog?:  {
+    __typename: "Dog",
     id: string,
     name: string,
-    description?: string | null,
+    representative?: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,
 };
 
-export type OnDeleteTodoSubscriptionVariables = {
-  filter?: ModelSubscriptionTodoFilterInput | null,
+export type OnDeleteDogSubscriptionVariables = {
+  filter?: ModelSubscriptionDogFilterInput | null,
 };
 
-export type OnDeleteTodoSubscription = {
-  onDeleteTodo?:  {
-    __typename: "Todo",
+export type OnDeleteDogSubscription = {
+  onDeleteDog?:  {
+    __typename: "Dog",
     id: string,
     name: string,
-    description?: string | null,
+    representative?: string | null,
     createdAt: string,
     updatedAt: string,
   } | null,

@@ -8,27 +8,23 @@ type GeneratedQuery<InputType, OutputType> = string & {
   __generatedQueryOutput: OutputType;
 };
 
-export const getTodo = /* GraphQL */ `query GetTodo($id: ID!) {
-  getTodo(id: $id) {
+export const getDog = /* GraphQL */ `query GetDog($id: ID!) {
+  getDog(id: $id) {
     id
     name
-    description
+    representative
     createdAt
     updatedAt
     __typename
   }
 }
-` as GeneratedQuery<APITypes.GetTodoQueryVariables, APITypes.GetTodoQuery>;
-export const listTodos = /* GraphQL */ `query ListTodos(
-  $filter: ModelTodoFilterInput
-  $limit: Int
-  $nextToken: String
-) {
-  listTodos(filter: $filter, limit: $limit, nextToken: $nextToken) {
+` as GeneratedQuery<APITypes.GetDogQueryVariables, APITypes.GetDogQuery>;
+export const listDogs = /* GraphQL */ `query ListDogs($filter: ModelDogFilterInput, $limit: Int, $nextToken: String) {
+  listDogs(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
       id
       name
-      description
+      representative
       createdAt
       updatedAt
       __typename
@@ -37,4 +33,4 @@ export const listTodos = /* GraphQL */ `query ListTodos(
     __typename
   }
 }
-` as GeneratedQuery<APITypes.ListTodosQueryVariables, APITypes.ListTodosQuery>;
+` as GeneratedQuery<APITypes.ListDogsQueryVariables, APITypes.ListDogsQuery>;

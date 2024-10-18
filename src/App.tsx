@@ -2,9 +2,9 @@ import {useEffect, useState} from 'react';
 import {generateClient} from 'aws-amplify/api';
 const client = generateClient();
 import * as mutations from './graphql/mutations';
-import {createTodo} from './graphql/mutations';
-import {listTodos} from './graphql/queries';
-import {type CreateTodoInput, type Todo} from './API';
+import {createDog} from './graphql/mutations';
+import {listDogs} from './graphql/queries';
+import {type CreateDogInput, type Dog} from './API';
 import {
     withAuthenticator,
     Button,
@@ -17,12 +17,12 @@ import '@aws-amplify/ui-react/styles.css';
 import {AppProps} from "./types/types.ts";
 
 
-const initialState: CreateTodoInput = {name: '', description: ''};
+const initialState: CreateDogInput = {name: '', representative: ''};
 
 // eslint-disable-next-line react-refresh/only-export-components
 const App: React.FC<AppProps> = ({signOut, user}) => {
-    const [formState, setFormState] = useState<CreateTodoInput>(initialState);
-    const [todos, setTodos] = useState<Todo[] | CreateTodoInput[]>([]);
+    const [formState, setFormState] = useState<CreateDogInput>(initialState);
+    const [todos, setTodos] = useState<Dog[] | CreateDogInput[]>([]);
 
     useEffect(() => {
         fetchTodos();
@@ -31,9 +31,9 @@ const App: React.FC<AppProps> = ({signOut, user}) => {
     async function fetchTodos() {
         try {
             const todoData = await client.graphql({
-                query: listTodos,
+                query: listDogs,
             });
-            const todos = todoData.data.listTodos.items;
+            const todos = todoData.data.listDogs.items;
             setTodos(todos);
         } catch (err) {
             console.log('error fetching todos', err);
@@ -42,12 +42,12 @@ const App: React.FC<AppProps> = ({signOut, user}) => {
 
     async function addTodo() {
         try {
-            if (!formState.name || !formState.description) return;
+            if (!formState.name || !formState.representative) return;
             const todo = {...formState};
             setTodos([...todos, todo]);
             setFormState(initialState);
             await client.graphql({
-                query: createTodo,
+                query: createDog,
                 variables: {
                     input: todo,
                 },
@@ -60,7 +60,7 @@ const App: React.FC<AppProps> = ({signOut, user}) => {
 
     async function deleteTodo(id: string) {
         await client.graphql({
-            query: mutations.deleteTodo,
+            query: mutations.deleteDog,
             variables: {input: {id}},
         })
         setTodos(todos.filter(todo => todo.id !== id));
@@ -73,7 +73,7 @@ const App: React.FC<AppProps> = ({signOut, user}) => {
             <Button style={styles.button} onClick={signOut}>
                 Sign out
             </Button>
-            <Heading level={2}>Amplify Todos</Heading>
+            <Heading level={2}>Amplify Dogs</Heading>
             <TextField
                 label=""
                 placeholder="Name"
@@ -85,20 +85,20 @@ const App: React.FC<AppProps> = ({signOut, user}) => {
             />
             <TextField
                 label=""
-                placeholder="Description"
+                placeholder="Representative"
                 onChange={(event) =>
-                    setFormState({...formState, description: event.target.value})
+                    setFormState({...formState, representative: event.target.value})
                 }
                 style={styles.input}
-                value={formState.description ?? ''}
+                value={formState.representative ?? ''}
             />
             <Button style={styles.button} onClick={addTodo}>
-                Create Todo
+                Save new dog
             </Button>
             {todos.map((todo, index) => (
                 <View key={todo.id ? todo.id : index} style={styles.todo}>
                     <Text style={styles.todoName}>{todo.name}</Text>
-                    <Text style={styles.todoDescription}>{todo.description}</Text>
+                    <Text style={styles.todoDescription}>{todo.representative}</Text>
                     <Button style={styles.button} onClick={() => deleteTodo(todo.id!)}>
                         Delete
                     </Button>

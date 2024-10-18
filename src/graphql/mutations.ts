@@ -8,54 +8,54 @@ type GeneratedMutation<InputType, OutputType> = string & {
   __generatedMutationOutput: OutputType;
 };
 
-export const createTodo = /* GraphQL */ `mutation CreateTodo(
-  $input: CreateTodoInput!
-  $condition: ModelTodoConditionInput
+export const createDog = /* GraphQL */ `mutation CreateDog(
+  $input: CreateDogInput!
+  $condition: ModelDogConditionInput
 ) {
-  createTodo(input: $input, condition: $condition) {
+  createDog(input: $input, condition: $condition) {
     id
     name
-    description
+    representative
     createdAt
     updatedAt
     __typename
   }
 }
 ` as GeneratedMutation<
-  APITypes.CreateTodoMutationVariables,
-  APITypes.CreateTodoMutation
+  APITypes.CreateDogMutationVariables,
+  APITypes.CreateDogMutation
 >;
-export const updateTodo = /* GraphQL */ `mutation UpdateTodo(
-  $input: UpdateTodoInput!
-  $condition: ModelTodoConditionInput
+export const updateDog = /* GraphQL */ `mutation UpdateDog(
+  $input: UpdateDogInput!
+  $condition: ModelDogConditionInput
 ) {
-  updateTodo(input: $input, condition: $condition) {
+  updateDog(input: $input, condition: $condition) {
     id
     name
-    description
+    representative
     createdAt
     updatedAt
     __typename
   }
 }
 ` as GeneratedMutation<
-  APITypes.UpdateTodoMutationVariables,
-  APITypes.UpdateTodoMutation
+  APITypes.UpdateDogMutationVariables,
+  APITypes.UpdateDogMutation
 >;
-export const deleteTodo = /* GraphQL */ `mutation DeleteTodo(
-  $input: DeleteTodoInput!
-  $condition: ModelTodoConditionInput
+export const deleteDog = /* GraphQL */ `mutation DeleteDog(
+  $input: DeleteDogInput!
+  $condition: ModelDogConditionInput
 ) {
-  deleteTodo(input: $input, condition: $condition) {
+  deleteDog(input: $input, condition: $condition) {
     id
     name
-    description
+    representative
     createdAt
     updatedAt
     __typename
   }
 }
 ` as GeneratedMutation<
-  APITypes.DeleteTodoMutationVariables,
-  APITypes.DeleteTodoMutation
+  APITypes.DeleteDogMutationVariables,
+  APITypes.DeleteDogMutation
 >;
