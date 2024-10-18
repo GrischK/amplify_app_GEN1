@@ -1,44 +1,67 @@
-import {useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {generateClient} from 'aws-amplify/api';
 
 const client = generateClient();
-import {uploadData} from 'aws-amplify/storage';
+import {uploadData, getUrl} from 'aws-amplify/storage';
 import * as mutations from './graphql/mutations';
 import {createDog} from './graphql/mutations';
 import {listDogs} from './graphql/queries';
-import {type CreateDogInput, type Dog} from './API';
+import {type Dog} from './API';
 import {
   withAuthenticator,
   Button,
   Heading,
   Text,
   TextField,
-  View
+  View,
+  Image
 } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 import {AppProps} from "./types/types.ts";
 
+interface CreateDog {
+  name: string,
+  representative: string,
+  picture: File | null | undefined
+}
 
-const initialState: CreateDogInput = {name: '', representative: '', file: null};
+const initialState: CreateDog = {name: '', representative: '', picture: null};
 
 // eslint-disable-next-line react-refresh/only-export-components
 const App: React.FC<AppProps> = ({signOut, user}) => {
-  const [formState, setFormState] = useState<CreateDogInput>(initialState);
-  const [todos, setTodos] = useState<Dog[] | CreateDogInput[]>([]);
-
+  const [formState, setFormState] = useState<CreateDog>(initialState);
+  const [dogs, setDogs] = useState<Dog[]>([]);
+  console.log(dogs)
   useEffect(() => {
-    fetchTodos();
+    fetchDogs();
   }, []);
 
-  async function fetchTodos() {
+  async function fetchDogs() {
     try {
-      const todoData = await client.graphql({
+      const dogData = await client.graphql({
         query: listDogs,
       });
-      const todos = todoData.data.listDogs.items;
-      setTodos(todos);
+      const dogs = dogData.data.listDogs.items as Dog[];
+
+      // Pour chaque chien, récupérer l'URL de l'image si elle existe
+      const dogsWithImages = await Promise.all(
+          dogs.map(async (dog) => {
+            if (dog.picture) {
+              const getUrlResult = await getUrl({
+                path: dog.picture,
+                options: {
+                  expiresIn: 3600, // URL valide pour 1 heure
+                },
+              });
+              return {...dog, picture: getUrlResult.url.toString()};
+            }
+            return dog;
+          })
+      );
+
+      setDogs(dogsWithImages);
     } catch (err) {
-      console.log('error fetching todos', err);
+      console.log('error fetching dogs', err);
     }
   }
 
@@ -60,52 +83,53 @@ const App: React.FC<AppProps> = ({signOut, user}) => {
         }
       }).result;
       console.log('Path from Response: ', result.path);
+      return result.path;
     } catch (error) {
       console.log('Error : ', error);
     }
   }
 
-
-  async function addTodo() {
+  async function addDog() {
     try {
       if (!formState.name || !formState.representative) return;
-      if (!formState.file) {
-        const todo = {...formState};
-        setTodos([...todos, todo]);
+
+      if (!formState.picture) {
+        const newDog = {...formState};
+        setDogs([...dogs, newDog as Dog]);
         setFormState(initialState);
         await client.graphql({
           query: createDog,
           variables: {
-            input: todo,
+            input: newDog,
           },
         });
-      } else if (formState.file) {
+      } else if (formState.picture) {
         const filename = `${formState.name}-${Date.now()}`;
-        const imageSrc = await uploadFile(formState.file, filename)
+        const imageSrc = await uploadFile(formState.picture, filename);
 
-        const todo = {...formState, picture: imageSrc};
-        setTodos([...todos, todo]);
+        const newDog = {...formState, picture: imageSrc};
+        setDogs([...dogs, newDog as Dog]);
         setFormState(initialState);
 
         await client.graphql({
           query: createDog,
           variables: {
-            input: todo,
+            input: newDog,
           },
         });
       }
 
     } catch (err) {
-      console.log('error creating todo:', err);
+      console.log('error creating dog:', err);
     }
   }
 
-  async function deleteTodo(id: string) {
+  async function deleteDog(id: string) {
     await client.graphql({
       query: mutations.deleteDog,
       variables: {input: {id}},
     })
-    setTodos(todos.filter(todo => todo.id !== id));
+    setDogs(dogs.filter(dog => dog.id !== id));
   }
 
   return (
@@ -136,17 +160,22 @@ const App: React.FC<AppProps> = ({signOut, user}) => {
               style={styles.input}
               value={formState.representative ?? ''}
           />
-          <input type="file" onChange={(e) => setFormState({...formState, file: e.target.files?.[0]})}/>
-          <Button style={styles.button} onClick={addTodo}>
+          <input type="file" onChange={(e) => setFormState({...formState, picture: e.target.files?.[0]})}/>
+          <Button style={styles.button} onClick={addDog}>
             Save new dog
           </Button>
         </div>
         <div style={styles.flexCol}>
-          {todos.map((todo, index) => (
-              <View key={todo.id ? todo.id : index} style={styles.todo}>
-                <Text style={styles.todoName}>{todo.name}</Text>
-                <Text style={styles.todoDescription}>{todo.representative}</Text>
-                <Button style={styles.button} onClick={() => deleteTodo(todo.id!)}>
+          {dogs.map((dog, index) => (
+              <View key={dog.id ? dog.id : index} style={styles.todo}>
+                <div style={{...styles.flex, ...styles.dogDetails}}>
+                  {dog.picture && (
+                      <Image src={dog.picture} alt={`${dog.name} picture`} style={styles.dogImg}/>
+                  )}
+                  <Text style={styles.todoName}>{dog.name}</Text>
+                </div>
+                <Text style={styles.todoDescription}>{dog.representative}</Text>
+                <Button style={styles.button} onClick={() => deleteDog(dog.id!)}>
                   Delete
                 </Button>
               </View>
@@ -157,6 +186,11 @@ const App: React.FC<AppProps> = ({signOut, user}) => {
 };
 
 const styles = {
+  flex: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
   flexCol: {
     display: "flex",
     flexDirection: "column",
@@ -206,6 +240,16 @@ const styles = {
   },
   userInfo: {
     marginBottom: "24px"
+  },
+  dogImg: {
+    width: "45px",
+    height: "45px",
+    borderRadius: "50%",
+    objectFit: "cover"
+  },
+  dogDetails: {
+    justifyContent: "start",
+    gap: "12px"
   }
 } as const;
 

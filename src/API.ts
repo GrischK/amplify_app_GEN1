@@ -6,7 +6,7 @@ export type CreateDogInput = {
   id?: string | null,
   name: string,
   representative?: string | null,
-  file?: File | null,
+  file?: string | null,
 };
 
 export type ModelDogConditionInput = {
