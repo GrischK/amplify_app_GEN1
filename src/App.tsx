@@ -19,6 +19,7 @@ import {
 } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 import {AppProps} from "./types/types.ts";
+import {NavLink} from "react-router-dom";
 
 interface CreateDog {
   name: string,
@@ -182,6 +183,7 @@ const App: React.FC<AppProps> = ({signOut, user}) => {
                 <Button style={styles.button} onClick={() => deleteDog(dog.id!)}>
                   Delete
                 </Button>
+                <NavLink to={`dogs/${dog.id}`}>More info</NavLink>
               </View>
           ))}
         </div>
@@ -202,8 +204,8 @@ const styles = {
     alignItems: "center",
   },
   container: {
-    minHeight: "200vh",
-    width: "100vw",
+    minHeight: "100vh",
+    minWidth: "100vw",
     margin: "0 auto",
     display: "flex",
     flexDirection: "column",
@@ -212,7 +214,6 @@ const styles = {
     gap: 24,
     padding: 20,
     background: "linear-gradient(180deg, rgb(124, 131, 131), rgb(255, 255, 255))",
-
   },
   todo: {
     marginBottom: 15,
