@@ -14,7 +14,8 @@ import {
   Text,
   TextField,
   View,
-  Image
+  Image,
+  Input
 } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 import {AppProps} from "./types/types.ts";
@@ -31,7 +32,7 @@ const initialState: CreateDog = {name: '', representative: '', picture: null};
 const App: React.FC<AppProps> = ({signOut, user}) => {
   const [formState, setFormState] = useState<CreateDog>(initialState);
   const [dogs, setDogs] = useState<Dog[]>([]);
-  console.log(dogs)
+
   useEffect(() => {
     fetchDogs();
   }, []);
@@ -43,7 +44,6 @@ const App: React.FC<AppProps> = ({signOut, user}) => {
       });
       const dogs = dogData.data.listDogs.items as Dog[];
 
-      // Pour chaque chien, récupérer l'URL de l'image si elle existe
       const dogsWithImages = await Promise.all(
           dogs.map(async (dog) => {
             if (dog.picture) {
@@ -109,6 +109,7 @@ const App: React.FC<AppProps> = ({signOut, user}) => {
 
         const newDog = {...formState, picture: imageSrc};
         setDogs([...dogs, newDog as Dog]);
+        (document.getElementById('fileInput') as HTMLInputElement).value = '';
         setFormState(initialState);
 
         await client.graphql({
@@ -118,7 +119,7 @@ const App: React.FC<AppProps> = ({signOut, user}) => {
           },
         });
       }
-
+      fetchDogs();
     } catch (err) {
       console.log('error creating dog:', err);
     }
@@ -135,37 +136,40 @@ const App: React.FC<AppProps> = ({signOut, user}) => {
   return (
       <View style={styles.container}>
         <div style={{...styles.flexCol, ...styles.userInfo}}>
-          <Heading level={1}>Hello {user?.username}</Heading>
+          <Text fontSize={24}>Hello {user?.username.toUpperCase()}</Text>
           <Button style={styles.button} onClick={signOut}>
             Sign out
           </Button>
         </div>
-        <div style={{...styles.flexCol, ...styles.createDog}}>
-          <Heading level={2}>Amplify Dogs</Heading>
-          <TextField
-              label=""
-              placeholder="Name"
-              onChange={(event) =>
-                  setFormState({...formState, name: event.target.value})
-              }
-              style={styles.input}
-              value={formState.name}
-          />
-          <TextField
-              label=""
-              placeholder="Representative"
-              onChange={(event) =>
-                  setFormState({...formState, representative: event.target.value})
-              }
-              style={styles.input}
-              value={formState.representative ?? ''}
-          />
-          <input type="file" onChange={(e) => setFormState({...formState, picture: e.target.files?.[0]})}/>
-          <Button style={styles.button} onClick={addDog}>
-            Save new dog
-          </Button>
-        </div>
-        <div style={styles.flexCol}>
+        <Heading level={1}>Amplify Dogs</Heading>
+        <details>
+          <summary>Save a dog</summary>
+          <div style={{...styles.flexCol, ...styles.createDog}}>
+            <TextField
+                label=""
+                placeholder="Name"
+                onChange={(event) =>
+                    setFormState({...formState, name: event.target.value})
+                }
+                style={styles.input}
+                value={formState.name}
+            />
+            <TextField
+                label=""
+                placeholder="Representative"
+                onChange={(event) =>
+                    setFormState({...formState, representative: event.target.value})
+                }
+                style={styles.input}
+                value={formState.representative ?? ''}
+            />
+            <Input id="fileInput" type="file" onChange={(e) => setFormState({...formState, picture: e.target.files?.[0]})}/>
+            <Button style={styles.button} onClick={addDog}>
+              Save new dog
+            </Button>
+          </div>
+        </details>
+        <div style={{...styles.flex, ...styles.dogsList}}>
           {dogs.map((dog, index) => (
               <View key={dog.id ? dog.id : index} style={styles.todo}>
                 <div style={{...styles.flex, ...styles.dogDetails}}>
@@ -198,11 +202,12 @@ const styles = {
     alignItems: "center",
   },
   container: {
+    minHeight: "200vh",
     width: "100vw",
     margin: "0 auto",
     display: "flex",
     flexDirection: "column",
-    justifyContent: "center",
+    // justifyContent: "center",
     alignItems: "center",
     gap: 24,
     padding: 20,
@@ -236,10 +241,14 @@ const styles = {
   },
   createDog: {
     borderBottom: "1px solid black",
-    paddingBottom: "12px"
+    paddingBottom: "12px",
+    gap: "12px"
   },
   userInfo: {
-    marginBottom: "24px"
+    marginBottom: "24px",
+    position: "absolute",
+    top: "6px",
+    right: "6px",
   },
   dogImg: {
     width: "45px",
@@ -250,6 +259,11 @@ const styles = {
   dogDetails: {
     justifyContent: "start",
     gap: "12px"
+  },
+  dogsList: {
+    gap: "12px",
+    flexWrap: "wrap",
+    justifyContent: "start",
   }
 } as const;
 
