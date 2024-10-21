@@ -14,6 +14,10 @@ export const onCreateDog = /* GraphQL */ `subscription OnCreateDog($filter: Mode
     name
     representative
     picture
+    friends {
+      nextToken
+      __typename
+    }
     createdAt
     updatedAt
     __typename
@@ -29,6 +33,10 @@ export const onUpdateDog = /* GraphQL */ `subscription OnUpdateDog($filter: Mode
     name
     representative
     picture
+    friends {
+      nextToken
+      __typename
+    }
     createdAt
     updatedAt
     __typename
@@ -44,6 +52,10 @@ export const onDeleteDog = /* GraphQL */ `subscription OnDeleteDog($filter: Mode
     name
     representative
     picture
+    friends {
+      nextToken
+      __typename
+    }
     createdAt
     updatedAt
     __typename
@@ -52,4 +64,100 @@ export const onDeleteDog = /* GraphQL */ `subscription OnDeleteDog($filter: Mode
 ` as GeneratedSubscription<
   APITypes.OnDeleteDogSubscriptionVariables,
   APITypes.OnDeleteDogSubscription
+>;
+export const onCreateDogFriend = /* GraphQL */ `subscription OnCreateDogFriend($filter: ModelSubscriptionDogFriendFilterInput) {
+  onCreateDogFriend(filter: $filter) {
+    id
+    dogId
+    friendId
+    dog {
+      id
+      name
+      representative
+      picture
+      createdAt
+      updatedAt
+      __typename
+    }
+    friend {
+      id
+      name
+      representative
+      picture
+      createdAt
+      updatedAt
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnCreateDogFriendSubscriptionVariables,
+  APITypes.OnCreateDogFriendSubscription
+>;
+export const onUpdateDogFriend = /* GraphQL */ `subscription OnUpdateDogFriend($filter: ModelSubscriptionDogFriendFilterInput) {
+  onUpdateDogFriend(filter: $filter) {
+    id
+    dogId
+    friendId
+    dog {
+      id
+      name
+      representative
+      picture
+      createdAt
+      updatedAt
+      __typename
+    }
+    friend {
+      id
+      name
+      representative
+      picture
+      createdAt
+      updatedAt
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnUpdateDogFriendSubscriptionVariables,
+  APITypes.OnUpdateDogFriendSubscription
+>;
+export const onDeleteDogFriend = /* GraphQL */ `subscription OnDeleteDogFriend($filter: ModelSubscriptionDogFriendFilterInput) {
+  onDeleteDogFriend(filter: $filter) {
+    id
+    dogId
+    friendId
+    dog {
+      id
+      name
+      representative
+      picture
+      createdAt
+      updatedAt
+      __typename
+    }
+    friend {
+      id
+      name
+      representative
+      picture
+      createdAt
+      updatedAt
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnDeleteDogFriendSubscriptionVariables,
+  APITypes.OnDeleteDogFriendSubscription
 >;

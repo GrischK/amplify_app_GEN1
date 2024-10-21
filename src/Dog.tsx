@@ -15,18 +15,47 @@ import {
 import '@aws-amplify/ui-react/styles.css';
 import {useParams} from "react-router-dom";
 import {type Dog} from './API';
-import {getDog} from "./graphql/queries.ts";
+import {getDog, listDogs} from "./graphql/queries.ts";
 import {getUrl} from "aws-amplify/storage";
+import {createDogFriend} from './graphql/mutations';
 
 const Dog = () => {
   const {dogId} = useParams();
   const [dog, setDog] = useState<Dog>()
+  const [dogs, setDogs] = useState<Dog[]>([])
+  const [dogFriends, setDogFriends] = useState<Dog[]>([])
+
+  console.log(dogs)
+  useEffect(() => {
+    fetchDogs()
+  }, []);
 
   useEffect(() => {
     if (dogId) {
       fetchDogDetails(dogId)
     }
   }, [dogId]);
+
+  useEffect(() => {
+    const fetchFriends = async () => {
+      if (dog && dog.friends && dog.friends.items.length > 0) {
+        const friendsDetails = await Promise.all(
+            dog.friends.items.map(async (friend) => {
+              if (friend && friend.friendId) {
+                const {data} = await client.graphql({
+                  query: getDog,
+                  variables: {id: friend.friendId},
+                });
+                return data.getDog;
+              }
+              return null;
+            })
+        );
+        setDogFriends(friendsDetails.filter((friend): friend is Dog => !!friend));
+      }
+    };
+    fetchFriends();
+  }, [dog]);
 
   async function fetchDogDetails(id: string) {
     try {
@@ -51,6 +80,29 @@ const Dog = () => {
     }
   }
 
+  async function addDogFriend(dogId: string, friendId: string) {
+    await client.graphql({
+      query: createDogFriend,
+      variables: {
+        input: {dogId: dogId, friendId: friendId}
+      }
+    });
+    fetchDogDetails(dogId)
+  }
+
+  async function fetchDogs() {
+    try {
+      const dogData = await client.graphql({
+        query: listDogs,
+      });
+      const dogs = dogData.data.listDogs.items as Dog[];
+
+      setDogs(dogs);
+    } catch (err) {
+      console.log('error fetching dogs', err);
+    }
+  }
+
   return (
       <View style={styles.container}>
         {dog && (
@@ -61,6 +113,20 @@ const Dog = () => {
               )}
             </>
         )}
+        {dogId && dogs.map((dog, index) => (
+            <View key={dog.id ? dog.id : index}>
+              {dog.name}
+              <Button onClick={() => addDogFriend(dogId, dog.id)}>Add</Button>
+            </View>
+        ))}
+        <View>
+          <Heading level={2}>Ses amis :</Heading>
+          {dogFriends.length > 0 && dogFriends.map((friend) => (
+              <Text key={friend.id}>
+                {friend.name}
+              </Text>
+          ))}
+        </View>
       </View>
   );
 };

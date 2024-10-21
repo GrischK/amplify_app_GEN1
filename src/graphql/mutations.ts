@@ -17,6 +17,10 @@ export const createDog = /* GraphQL */ `mutation CreateDog(
     name
     representative
     picture
+    friends {
+      nextToken
+      __typename
+    }
     createdAt
     updatedAt
     __typename
@@ -35,6 +39,10 @@ export const updateDog = /* GraphQL */ `mutation UpdateDog(
     name
     representative
     picture
+    friends {
+      nextToken
+      __typename
+    }
     createdAt
     updatedAt
     __typename
@@ -53,6 +61,10 @@ export const deleteDog = /* GraphQL */ `mutation DeleteDog(
     name
     representative
     picture
+    friends {
+      nextToken
+      __typename
+    }
     createdAt
     updatedAt
     __typename
@@ -61,4 +73,109 @@ export const deleteDog = /* GraphQL */ `mutation DeleteDog(
 ` as GeneratedMutation<
   APITypes.DeleteDogMutationVariables,
   APITypes.DeleteDogMutation
+>;
+export const createDogFriend = /* GraphQL */ `mutation CreateDogFriend(
+  $input: CreateDogFriendInput!
+  $condition: ModelDogFriendConditionInput
+) {
+  createDogFriend(input: $input, condition: $condition) {
+    id
+    dogId
+    friendId
+    dog {
+      id
+      name
+      representative
+      picture
+      createdAt
+      updatedAt
+      __typename
+    }
+    friend {
+      id
+      name
+      representative
+      picture
+      createdAt
+      updatedAt
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.CreateDogFriendMutationVariables,
+  APITypes.CreateDogFriendMutation
+>;
+export const updateDogFriend = /* GraphQL */ `mutation UpdateDogFriend(
+  $input: UpdateDogFriendInput!
+  $condition: ModelDogFriendConditionInput
+) {
+  updateDogFriend(input: $input, condition: $condition) {
+    id
+    dogId
+    friendId
+    dog {
+      id
+      name
+      representative
+      picture
+      createdAt
+      updatedAt
+      __typename
+    }
+    friend {
+      id
+      name
+      representative
+      picture
+      createdAt
+      updatedAt
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.UpdateDogFriendMutationVariables,
+  APITypes.UpdateDogFriendMutation
+>;
+export const deleteDogFriend = /* GraphQL */ `mutation DeleteDogFriend(
+  $input: DeleteDogFriendInput!
+  $condition: ModelDogFriendConditionInput
+) {
+  deleteDogFriend(input: $input, condition: $condition) {
+    id
+    dogId
+    friendId
+    dog {
+      id
+      name
+      representative
+      picture
+      createdAt
+      updatedAt
+      __typename
+    }
+    friend {
+      id
+      name
+      representative
+      picture
+      createdAt
+      updatedAt
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.DeleteDogFriendMutationVariables,
+  APITypes.DeleteDogFriendMutation
 >;

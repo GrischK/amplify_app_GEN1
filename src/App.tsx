@@ -95,7 +95,7 @@ const App: React.FC<AppProps> = ({signOut, user}) => {
       if (!formState.name || !formState.representative) return;
 
       if (!formState.picture) {
-        const newDog = {...formState};
+        const newDog = {...formState, picture: null};
         setDogs([...dogs, newDog as Dog]);
         setFormState(initialState);
         await client.graphql({
@@ -164,7 +164,8 @@ const App: React.FC<AppProps> = ({signOut, user}) => {
                 style={styles.input}
                 value={formState.representative ?? ''}
             />
-            <Input id="fileInput" type="file" onChange={(e) => setFormState({...formState, picture: e.target.files?.[0]})}/>
+            <Input id="fileInput" type="file"
+                   onChange={(e) => setFormState({...formState, picture: e.target.files?.[0]})}/>
             <Button style={styles.button} onClick={addDog}>
               Save new dog
             </Button>

@@ -3,8 +3,17 @@
 input AMPLIFY { globalAuthRule: AuthRule = { allow: public } } # FOR TESTING ONLY!
 
 type Dog @model {
-  id: ID!
-  name: String!
-  representative: String
-  picture: String
+    id: ID!
+    name: String!
+    representative: String
+    picture: String
+    friends: [DogFriend] @hasMany(indexName: "byDog", fields: ["id"])
+}
+
+type DogFriend @model {
+    id: ID!
+    dogId: ID! @index(name: "byDog", sortKeyFields: ["friendId"])
+    friendId: ID! @index(name: "byFriend", sortKeyFields: ["dogId"])
+    dog: Dog! @belongsTo(fields: ["dogId"])
+    friend: Dog! @belongsTo(fields: ["friendId"])
 }
