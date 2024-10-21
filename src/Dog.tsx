@@ -1,15 +1,13 @@
-import React, {useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import {generateClient} from "aws-amplify/api";
 
 const client = generateClient();
 import {
-  Button,
   Heading,
   Text,
-  TextField,
   View,
   Image,
-  Input, CheckboxField
+  CheckboxField
 } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 import {useParams} from "react-router-dom";
@@ -132,7 +130,7 @@ const Dog = () => {
         )}
         <View style={styles.friendsContainer}>
           <View style={styles.dogsList}>
-            {dogId && dogs.filter((dog)=> dog.id !== dogId).map((dog, index) => (
+            {dogId && dogs.filter((dog) => dog.id !== dogId).map((dog, index) => (
                 <CheckboxField
                     key={dog.id ? dog.id : index}
                     label={dog.name}
